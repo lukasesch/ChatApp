@@ -17,7 +17,7 @@ function ChatRoom({ username, onLogout }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/chat/history")
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/chat/history`)
       .then((response) => {
         setMessages(response.data);
         scrollToBottom();
@@ -43,7 +43,7 @@ function ChatRoom({ username, onLogout }) {
 
   useEffect(() => {
     const stompClient = new Client({
-      brokerURL: "ws://localhost:8080/chat",
+      brokerURL: `${import.meta.env.VITE_BACKEND_WS_URL}`,
       reconnectDelay: 5000,
       onConnect: () => {
         console.log("[STOMP DEBUG] onConnect");
