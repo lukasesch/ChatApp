@@ -56,3 +56,4 @@ yarn-error.log*
 
 # === Other ===
 TODO.txt
+chatbackend/src/main/resources/application.properties
