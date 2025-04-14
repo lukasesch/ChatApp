@@ -9,6 +9,7 @@ function ChatRoom({ username, onLogout }) {
   const stompClientRef = useRef(null);
   const chatEndRef = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
+  const hasJoinedRef = useRef(false);
   const scrollToBottom = () => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -53,18 +54,22 @@ function ChatRoom({ username, onLogout }) {
       onConnect: () => {
         console.log("[STOMP DEBUG] onConnect");
         setIsConnected(true);
+
         stompClient.subscribe("/topic/messages", (message) => {
           const body = JSON.parse(message.body);
           setMessages((prev) => [...prev, body]);
         });
 
-        stompClient.publish({
-          destination: "/app/chat",
-          body: JSON.stringify({
-            sender: "System",
-            content: `${username} joined the chat`,
-          }),
-        });
+        if (!hasJoinedRef.current) {
+          stompClient.publish({
+            destination: "/app/chat",
+            body: JSON.stringify({
+              sender: "System",
+              content: `${username} joined the chat`,
+            }),
+          });
+          hasJoinedRef.current = true;
+        }
       },
       onStompError: (frame) => {
         console.error("[STOMP DEBUG] onStompError", frame);
