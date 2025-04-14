@@ -10,7 +10,7 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry
             .addMapping("/**") // Erlaubt alle Pfade
-            .allowedOrigins("http://localhost:5173") // Nur dein Frontend
+            .allowedOrigins("https://chatapp-frontend-rfk0.onrender.com") // Nur dein Frontend
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .allowedHeaders("*");
     }
