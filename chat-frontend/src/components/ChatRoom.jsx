@@ -28,7 +28,7 @@ function ChatRoom({ username, onLogout }) {
   }, []);
 
   useEffect(() => {
-    return () => {
+    const handleBeforeUnload = () => {
       if (stompClientRef.current && stompClientRef.current.connected) {
         stompClientRef.current.publish({
           destination: "/app/chat",
@@ -38,6 +38,11 @@ function ChatRoom({ username, onLogout }) {
           }),
         });
       }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [username]);
 
